@@ -1,5 +1,8 @@
 # SpeechTranslator
 
+https://github.com/user-attachments/assets/c86d48c8-8d90-40d6-91d6-44375b810385
+
+
 We can speak any language and then translate it to the language we want to communicate.
 We used simple python libraries which are open Source.
 
