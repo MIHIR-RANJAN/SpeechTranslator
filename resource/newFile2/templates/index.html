@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Translator</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: skyblue;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+        }
+        #output {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: black;
+            color: lime;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Speech Translator</h1>
+        <input type="text" id="target_language" placeholder="Enter target language">
+        <button onclick="startTranslation()">Start Translation</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function startTranslation() {
+            const targetLanguage = $('#target_language').val();
+            $.ajax({
+                url: '/start_translation',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ target_language: targetLanguage }),
+                success: function(response) {
+                    console.log(response);
+                    getMessages();
+                }
+            });
+        }
+
+        function getMessages() {
+            $.ajax({
+                url: '/get_messages',
+                method: 'GET',
+                success: function(response) {
+                    $('#output').html(response.map(msg => `<p>${msg}</p>`).join(''));
+                    $('#output').scrollTop($('#output')[0].scrollHeight);
+                    setTimeout(getMessages, 1000);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
